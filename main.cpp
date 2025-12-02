@@ -16,6 +16,12 @@
 
 using namespace std;
 
+
+static int bookIdCounter = 1;
+static int studentIdCounter = 3;
+
+
+
 //BFS(Breadth - First Search) Algorithm
 vector<pair<int, int>> validShelves = {
     {0, 2}, {1, 2}, {2, 2}, {2, 3}, {2, 4}, {4, 4}, {6, 6}, {8, 2}
@@ -126,10 +132,22 @@ void printSortedBooks(vector<Book> books) {
 
 
 
-void addBook(vector<Book>& books, Book book) {
+void addBook(vector<Book>& books, const string& title, const string& author) {
+    Book newBook(bookIdCounter,title,author);
+    for (const auto& book : books)
+    {
+        if (book == newBook)
+        {
+            cout << "This book already exists: "
+                << newBook.getTitle() << " - " << newBook.getAuthor() << endl;
+            return;
+        }
+    }
     int randomIndex = rand() % validShelves.size();
-    book.setLocation(validShelves[randomIndex].first, validShelves[randomIndex].second);
-    books.push_back(book);
+    newBook.setLocation(validShelves[randomIndex].first, validShelves[randomIndex].second);
+    books.push_back(newBook);
+    cout << "Book added successfully. (ID: " << bookIdCounter << ")" << endl;
+    bookIdCounter++;
 }
 
 void listBooks(const vector<Book>& books) {
@@ -182,6 +200,17 @@ Student* findStudentById(vector<Student>& students, int id) {
     for (auto& student : students) {
         if (student.getId() == id) {
             return &student;
+        }
+    }
+    return nullptr;
+}
+
+Book* searchBook(vector<Book>& books, const string& _title) {
+    string title = toLowerCase(_title);
+
+    for (auto& book : books) {
+        if (toLowerCase(book.getTitle()) == title) {
+            return &book;
         }
     }
     return nullptr;
@@ -247,15 +276,14 @@ int main() {
     vector<Student> students;
     vector<BorrowRecord> borrowedRecords;
 
-    addBook(books, Book(1, "The Great Gatsby", "F. Scott Fitzgerald"));
-    addBook(books, Book(2, "1984", "George Orwell"));
-    addBook(books, Book(3, "The Hobbit", "J.R.R. Tolkien"));
+    addBook(books, "The Great Gatsby", "F. Scott Fitzgerald");
+    addBook(books, "1984", "George Orwell");
+    addBook(books, "The Hobbit", "J.R.R.Tolkien");
 
     addStudent(students, Student(1, "Emre", "Can", "Computer Engineering"));
     addStudent(students, Student(2, "Mahmut", "Karalioglu", "Computer Engineering"));
 
-    int bookIdCounter = 4;
-    int studentIdCounter = 3;
+    
 
     int choice;
     do {
@@ -266,8 +294,10 @@ int main() {
         cout << "4. List Students\n";
         cout << "5. Borrow a Book\n";
         cout << "6. Return a Book\n";
-        cout << "7. Show Borrow Records\n";
-        cout << "8. Sort Books By Title\n";
+        cout << "7. Search Book by Title\n";
+        cout << "8. Show Borrow Records\n";
+        cout << "9. Sort Books By Title\n";
+        cout << "10. Show Student Borrow Records (Using friend function)\n";
         cout << "0. Exit\n";
         cout << "Select: ";
         
@@ -289,8 +319,9 @@ int main() {
             cout << "Enter Book Author : ";
             getline(cin, bookAuthor);
 
-            addBook(books, Book(bookIdCounter++, bookTitle, bookAuthor));
-            cout << "Book added successfully. (ID: " << bookIdCounter - 1 << ")" << endl;
+           
+            addBook(books, bookTitle, bookAuthor);
+           // cout << "Book added successfully. (ID: " << bookIdCounter - 1 << ")" << endl;
         }
         else if (choice == 2) {
             string name, surname, department;
@@ -350,10 +381,31 @@ int main() {
             returnBook(books, borrowedRecords, bid, date);
         }
         else if (choice == 7) {
-            listBorrowRecords(borrowedRecords);
+            string title;
+            cout << "Enter the Book Title : ";
+            getline(cin,title);
+            
+            Book* b = searchBook(books, title);
+            if (b)
+            {
+                b->displayBook();
+            }
+            else {
+                cout << "Book not found!" << endl;
+            }
         }
         else if (choice == 8) {
+            listBorrowRecords(borrowedRecords);
+        }
+        else if (choice == 9) {
             printSortedBooks(books);
+        }
+        else if (choice == 10)
+        {
+            int id;
+            cout << "Enter Student Id : ";
+            cin >> id;
+            printStudentBorrowRecords(id,borrowedRecords);
         }
 
     } while (choice != 0);

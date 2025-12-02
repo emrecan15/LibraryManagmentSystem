@@ -4,16 +4,29 @@
 
 using namespace std;
 
+
+void printStudentBorrowRecords(int studentId, const vector<BorrowRecord>& records) {
+	for (const auto& record : records) {
+		if (record.student.getId() == studentId) {
+			string rDate = record.returnDate.empty() ? "Not Returned" : record.returnDate;
+
+			cout << "------------------------------------------------------" << endl;
+			cout << " [STUDENT] : " << record.student.getName() << " " << record.student.getSurname()
+				<< " (" << record.student.getDepartment() << ")" << endl;
+			cout << " [BOOK]   : " << record.book.getTitle() << endl;
+			cout << " [BORROW-DATE]   : " << record.borrowDate << endl;
+			cout << " [RETURN-DATE]   : " << rDate << endl;
+			cout << "------------------------------------------------------" << endl;
+		}
+	}
+}
+
 BorrowRecord::BorrowRecord(const Student& student, const Book& book, const string& date) :student(student), book(book), borrowDate(date), returnDate("") {
 
 }
 
 void BorrowRecord::displayRecord() const{
-	/*
-	cout << "Student: " << student.getName() << " " << student.getSurname() << " | Department: " << student.getDepartment()
-		<< " | Borrowed Book: \"" << book.getTitle() << "\"" << " | Borrow Date : " << borrowDate <<" | Return Date : "<< returnDate << endl;
-		*/
-
+	
 	string rDate = returnDate.empty() ? "Not Returned" : returnDate;
 
 	cout << "------------------------------------------------------" << endl;

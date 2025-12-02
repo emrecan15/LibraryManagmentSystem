@@ -1,11 +1,15 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "Student.h"
 #include "Book.h"
 
 using namespace std;
 
 class BorrowRecord {
+
+	friend void printStudentBorrowRecords(int studentId, const vector<BorrowRecord>& records);
+
 private:
 	Student student;
 	Book book;
@@ -22,4 +26,6 @@ public:
 
 
 	void displayRecord() const;
+
+	
 };

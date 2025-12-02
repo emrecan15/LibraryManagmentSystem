@@ -33,13 +33,7 @@ void Book::returnBook() {
 }
 
 void Book::displayBook() const {
-	/*
-	cout << "[" << id << "] " << title << " by " << author;
-	if (isBorrowed)
-		cout << " [Borrowed]";
-	cout << endl;
-	*/
-
+	
 	cout << "ID: " << id << " | Title: " << title << " | Author: " << author
 		<< " | Shelf: [" << shelfRow << "," << shelfCol << "] | Status: "
 		<< (isBorrowed ? "Borrowed" : "Available") << endl;
@@ -49,4 +43,16 @@ int Book::getRow() const {
 }
 int Book::getCol() const {
 	return shelfCol;
+}
+void Book::setLocation(int row, int col) {
+	shelfRow = row;
+	shelfCol = col;
+}
+void Book::setLocation(int index) {
+	shelfRow = index / 10;   
+	shelfCol = index % 10;
+}
+
+bool Book::operator==(const Book& other) const {
+	return title == other.title && author == other.author; 
 }

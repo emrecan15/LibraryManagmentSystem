@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 using namespace std;
 
 class Book {
@@ -24,10 +25,12 @@ public:
 	void borrowBook();
 	void returnBook();
 
-	void setLocation(int row, int col) {
-		shelfRow = row;
-		shelfCol = col;
-	}
+	void setLocation(int row, int col);
+	void setLocation(int index);
+
+
 	int getRow() const;
 	int getCol() const;
+
+	bool operator==(const Book& other) const; 
 };
