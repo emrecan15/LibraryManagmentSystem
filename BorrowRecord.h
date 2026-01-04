@@ -7,7 +7,7 @@
 using namespace std;
 
 class BorrowRecord {
-
+	// friend function
 	friend void printStudentBorrowRecords(int studentId, const vector<BorrowRecord>& records);
 
 private:
@@ -24,8 +24,11 @@ public:
 
 	const Book& getBook() const;
 
-
+	bool isActive() const;                      
+	bool isReturned() const;
 	void displayRecord() const;
+	bool matchesStudent(int id) const; 
+	bool matchesBook(int id) const;
 
 	
 };

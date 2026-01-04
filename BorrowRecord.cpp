@@ -50,3 +50,32 @@ const Book& BorrowRecord::getBook() const {
 	return book;
 }
 
+bool BorrowRecord::isActive() const {
+	if (returnDate.empty()) {
+		return true;
+	}
+	return false;
+}
+
+
+bool BorrowRecord::isReturned() const {
+	if (!returnDate.empty()) {
+		return true;
+	}
+	return false;
+}
+
+
+bool BorrowRecord::matchesStudent(int id) const {
+	if (student.getId() == id) {
+		return true;
+	}
+	return false;
+}
+
+bool BorrowRecord::matchesBook(int id) const {
+	if (book.getId() == id) {
+		return true;
+	}
+	return false;
+}

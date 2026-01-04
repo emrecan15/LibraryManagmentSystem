@@ -5,7 +5,7 @@
 #include "BorrowRecord.h"
 #include "Student.h"
 
-#include <algorithm> 
+
 #include <cctype> 
 
 #include <queue>    
@@ -102,9 +102,12 @@ void drawPathToShelf(int targetRow, int targetColumn) {
 }
 
 string toLowerCase(string str) {
-    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    for (char& c : str) {
+        c = tolower(c); 
+    }
     return str;
 }
+
 
 // Selection Sort algorithm
 void printSortedBooks(vector<Book> books) {
