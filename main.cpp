@@ -22,17 +22,19 @@ static int studentIdCounter = 3;
 
 
 
-//BFS(Breadth - First Search) Algorithm
+// Breadth-First Search (BFS) Algorithm
 vector<pair<int, int>> validShelves = {
     {0, 2}, {1, 2}, {2, 2}, {2, 3}, {2, 4}, {4, 4}, {6, 6}, {8, 2}
 };
 
-void drawPathToShelf(int targetRow, int targetCol) {
-    const int SIZE = 10;
-    int dRow[] = { -1, 1, 0, 0 };
-    int dCol[] = { 0, 0, -1, 1 };
+void drawPathToShelf(int targetRow, int targetColumn) {
+    const int GRID_SIZE = 10;
 
-    int grid[SIZE][SIZE] = {
+
+    int rowDirectionOffsets[] = { -1, 1, 0, 0 };
+    int columnDirectionOffsets[] = { 0, 0, -1, 1 };
+
+    int grid[GRID_SIZE][GRID_SIZE] = {
         {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
         {0, 1, 0, 1, 0, 1, 1, 1, 0, 0},
         {0, 1, 0, 0, 0, 0, 0, 1, 0, 0},
@@ -45,50 +47,54 @@ void drawPathToShelf(int targetRow, int targetCol) {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    bool visited[SIZE][SIZE] = { false };
-    pair<int, int> parent[SIZE][SIZE];
-    queue<pair<int, int>> q;
+    bool visitedCells[GRID_SIZE][GRID_SIZE] = { false };
+    pair<int, int> parentCell[GRID_SIZE][GRID_SIZE];
+    queue<pair<int, int>> coordinatesQueue;
 
-    q.push({ 0, 0 });
-    visited[0][0] = true;
-    parent[0][0] = { -1, -1 };
+    coordinatesQueue.push({ 0, 0 });
+    visitedCells[0][0] = true;
+    parentCell[0][0] = { -1, -1 };
 
-    bool found = false;
+    bool pathFound = false;
 
-    // --- Algorithm calculate ---
-    while (!q.empty()) {
-        pair<int, int> curr = q.front();
-        q.pop();
+    while (!coordinatesQueue.empty()) {
+        pair<int, int> currentPosition = coordinatesQueue.front();
+        coordinatesQueue.pop();
 
-        if (curr.first == targetRow && curr.second == targetCol) {
-            found = true;
+        if (currentPosition.first == targetRow && currentPosition.second == targetColumn) {
+            pathFound = true;
             break;
         }
 
+        // check neighbors
         for (int i = 0; i < 4; i++) {
-            int newR = curr.first + dRow[i];
-            int newC = curr.second + dCol[i];
+            int nextRow = currentPosition.first + rowDirectionOffsets[i];
+            int nextColumn = currentPosition.second + columnDirectionOffsets[i];
 
-            if (newR >= 0 && newR < SIZE && newC >= 0 && newC < SIZE &&
-                grid[newR][newC] == 0 && !visited[newR][newC]) {
+            if (nextRow >= 0 && nextRow < GRID_SIZE &&
+                nextColumn >= 0 && nextColumn < GRID_SIZE &&
+                grid[nextRow][nextColumn] == 0 &&
+                !visitedCells[nextRow][nextColumn]) {
 
-                q.push({ newR, newC });
-                visited[newR][newC] = true;
-                parent[newR][newC] = { curr.first, curr.second };
+                coordinatesQueue.push({ nextRow, nextColumn });
+                visitedCells[nextRow][nextColumn] = true;
+                parentCell[nextRow][nextColumn] = { currentPosition.first, currentPosition.second };
             }
         }
     }
 
-    if (found) {
-        int steps = 0;
-        pair<int, int> trace = { targetRow, targetCol };
-        while (trace.first != -1) {
-            steps++;
-            trace = parent[trace.first][trace.second];
+    if (pathFound) {
+        int numberOfSteps = 0;
+        pair<int, int> pathTracer = { targetRow, targetColumn };
+
+        // check step size
+        while (pathTracer.first != -1) {
+            numberOfSteps++;
+            pathTracer = parentCell[pathTracer.first][pathTracer.second];
         }
 
         cout << "Optimal route calculated successfully." << endl;
-        cout << "Distance to shelf: " << steps - 1 << " steps." << endl;
+        cout << "Distance to shelf: " << numberOfSteps - 1 << " steps." << endl;
     }
     else {
         cout << "Error: Path to the shelf could not be found!" << endl;
