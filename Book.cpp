@@ -56,3 +56,17 @@ void Book::setLocation(int index) {
 bool Book::operator==(const Book& other) const {
 	return title == other.title && author == other.author; 
 }
+
+string Book::getShortTitle() const {
+	if (title.length() > 15) {
+		return title.substr(0, 15) + "...";
+	}
+	return title;
+}
+
+bool Book::isAnonymous() const {
+	if (author == "Unknown") {
+		return true;
+	}
+	return false;
+}

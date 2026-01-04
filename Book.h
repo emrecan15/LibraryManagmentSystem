@@ -21,16 +21,20 @@ public:
 	string getAuthor() const;
 	bool getStatus() const;
 
-	void displayBook() const;
-	void borrowBook();
-	void returnBook();
-
-	void setLocation(int row, int col);
-	void setLocation(int index);
-
-
 	int getRow() const;
 	int getCol() const;
 
+	//function overloading
+	void setLocation(int row, int col);
+	void setLocation(int index);
+
+	void displayBook() const;
+	void borrowBook();
+	void returnBook();
+	string getShortTitle() const;
+
+	bool isAnonymous() const;
+
+	//operator overloading
 	bool operator==(const Book& other) const; 
 };

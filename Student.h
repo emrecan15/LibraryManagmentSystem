@@ -15,5 +15,9 @@ public:
 	string getDepartment() const;
 
 	void displayStudent() const;
+	string getDepartmentCode() const;      
+	void printIDCard() const;              
+	string createUsername() const;         
+	void printProfileSummary() const;
 	
 };

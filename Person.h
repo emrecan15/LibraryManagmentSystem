@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -13,4 +14,10 @@ public:
 	int getId() const;
 	string getName() const;
 	string getSurname() const;
+
+	string getFullName() const;         
+	string getInitials() const;         
+	bool matchesSearch(string key) const; 
+	void printBaseInfo() const;
+	bool isValid() const;
 };
